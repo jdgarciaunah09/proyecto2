@@ -13,6 +13,7 @@ function CargarPedidos(){
         url: UrlGetPedidos,
         type: 'POST',
         datatype: 'JSON',
+        contentType: 'application/json',
         success: function(response){
             var MiItems = response;
             var Valores = '';
@@ -29,8 +30,8 @@ function CargarPedidos(){
                 '<td>'+ MiItems[i].FECHA_ENTREGA + '</td>'+
                 '<td>'+ MiItems[i].ESTADO + '</td>'+
                 '<td>'+
-                '<button class = "btn btn-outline-warning" onclick="CargarPedido('+MiItems[i].ID +')">Editar</button>'+
-            
+                '<button class = "btn btn-outline-warning" onclick="CargarPedido('+MiItems[i].ID +')">Editar</button'+
+                '<td>'+
                 '<button class="btn btn-danger" onclick="EliminarPedido('+MiItems[i].ID +')">Eliminar</button>'+
                 '<td>'+
                 '</tr>';
@@ -66,14 +67,14 @@ function AgregarPedido(){
 
   function CargarPedido(IDpedido){
       var datospedido= {
-          id: IDpedido
+          ID: IDpedido
       };
       var datospedidosjson= JSON.stringify(datospedido);
 
       $.ajax({
         url: UrlGetPedido,
         type: 'POST',
-        data: datospedidosjson,
+        data:datospedidosjson,
         datatype: 'JSON',
         contentType: 'application/json',
         success: function(response){
@@ -87,21 +88,23 @@ function AgregarPedido(){
             $('#fechaentrega').val(MiItems[0].FECHA_ENTREGA);
 
             var btnactualizar = '<input type="submit" id="btn_actualizar" onclick="ActualizarPedido('+ MiItems[0].ID+')"'+
-            'value= "Actualizar Pedido" class="btn btn primary"></input>';
-            $('.button').html(btnactualizar);
+            'value= "Actualizar Pedido" class="btn btn-primary"></input>';
+            $('.btnagregar').html(btnactualizar);
         }
     });
 }
     function ActualizarPedido(IDpedido){
         var datospedido = {
-         id:IDpedido,
+         ID:IDpedido,
          ID_SOCIO:$('#idsocio').val(),
          FECHA_PEDIDO:$('#FechaPedido').val(),
          DETALLE:$('#detalle').val(),
          SUB_TOTAL:$('#subtotal').val(),
          TOTAL_ISV:$('#totalisv').val(),
          TOTAL:$('#total').val(),
-         FECHA_ENTREGA:$('#fechaentrega').val()
+         FECHA_ENTREGA:$('#fechaentrega').val(),
+         ESTADO: 'P'
+        
         };
         var datospedidosjson= JSON.stringify(datospedido);
         
@@ -118,9 +121,9 @@ function AgregarPedido(){
         alert("Pedido Actualizado");      
     }
 
-function EliminarPedido(){
+function EliminarPedido(IDpedido){
     var datospedido ={
-        id: IDpedido
+        ID: IDpedido
     };
     var datospedidosjson= JSON.stringify(datospedido);
 
